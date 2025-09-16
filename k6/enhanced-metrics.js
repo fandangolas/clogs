@@ -16,32 +16,32 @@ export let options = {
       executor: 'ramping-vus',
       startVUs: 1,
       stages: [
-        { duration: '1m', target: 10 },   // Warm up
-        { duration: '2m', target: 25 },   // Ramp up
-        { duration: '3m', target: 50 },   // Peak load
-        { duration: '2m', target: 75 },   // High load
-        { duration: '1m', target: 25 },   // Ramp down
-        { duration: '1m', target: 0 },    // Cool down
+        { duration: '30s', target: 300 },  // Very aggressive warm up
+        { duration: '1m', target: 750 },   // Fast ramp to extreme load
+        { duration: '1.5m', target: 1000 }, // Heavy stress testing
+        { duration: '1m', target: 1500 },  // ABSOLUTE MAXIMUM - Break it!
+        { duration: '30s', target: 500 },  // Quick ramp down
+        { duration: '30s', target: 0 },    // Cool down
       ],
     },
   },
 
-  // Comprehensive thresholds including p99 and p99.9
+  // Maximum stress thresholds - very relaxed to find breaking point with extreme percentiles
   thresholds: {
-    // Overall HTTP metrics
-    'http_req_duration': ['p(50)<100', 'p(90)<300', 'p(95)<500', 'p(99)<1000', 'p(99.9)<2000'],
-    'http_req_failed': ['rate<0.01'], // < 1% error rate
+    // Overall HTTP metrics - relaxed for maximum stress testing with extreme percentiles
+    'http_req_duration': ['p(50)<500', 'p(90)<1000', 'p(95)<2000', 'p(99)<5000', 'p(99.9)<10000', 'p(99.99)<20000', 'p(99.999)<30000'],
+    'http_req_failed': ['rate<0.10'], // < 10% error rate under maximum stress
 
-    // Custom metrics
-    'request_latency': ['p(50)<100', 'p(90)<300', 'p(95)<500', 'p(99)<1000', 'p(99.9)<2000'],
-    'errors': ['rate<0.01'],
+    // Custom metrics - very relaxed for maximum stress testing with extreme percentiles
+    'request_latency': ['p(50)<500', 'p(90)<1000', 'p(95)<2000', 'p(99)<5000', 'p(99.9)<10000', 'p(99.99)<20000', 'p(99.999)<30000'],
+    'errors': ['rate<0.10'],
 
-    // Performance targets
-    'requests_per_second': ['count>5000'], // Minimum 5K total requests
+    // Performance targets - expecting massive throughput or system breakdown
+    'requests_per_second': ['count>30000'], // Minimum 30K total requests with 1500 VUs
   },
 
-  // Detailed summary export
-  summaryTrendStats: ['avg', 'min', 'med', 'max', 'p(90)', 'p(95)', 'p(99)', 'p(99.9)', 'count'],
+  // Detailed summary export with extreme percentiles
+  summaryTrendStats: ['avg', 'min', 'med', 'max', 'p(90)', 'p(95)', 'p(99)', 'p(99.9)', 'p(99.99)', 'p(99.999)', 'count'],
 };
 
 // Performance tracking variables

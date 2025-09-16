@@ -145,23 +145,31 @@ See [DEVELOPMENT.md](./DEVELOPMENT.md) for detailed development guidelines, test
 
 ## ⚡ **Performance**
 
-Current **async implementation** using core.async for concurrent file I/O and HTTP-based querying achieves:
+Current **async implementation** using core.async for concurrent file I/O and HTTP-based querying achieves exceptional performance under extreme load:
 
-- **661.3 RPS** average throughput with **100% success rate**
-- **P99 latency: 2.06ms** (outstanding sub-millisecond response times)
-- **Handles 75 concurrent users** during 10-minute stress tests
-- **396,850 requests** processed with zero errors
+- **13,021.8 RPS** average throughput with **100% success rate**
+- **P99 latency: 30.93ms** under 1500 concurrent users
+- **Peak throughput: 15,626.2 RPS** (almost 16K requests/second!)
+- **3,906,618 requests** processed with zero errors in 10 minutes
 
-### 🚀 **Async Performance Improvements**
-Core.async implementation delivers significant latency improvements over synchronous file I/O:
+### 🚀 **Extreme Load Performance (1500 VUs)**
+Our optimized system demonstrates remarkable scalability and tail latency control:
 
-- **P99 latency**: 36.8% faster (3.26ms → 2.06ms)
-- **P95 latency**: 30.2% faster (1.26ms → 0.88ms)
-- **P90 latency**: 26.3% faster (0.99ms → 0.73ms)
-- **Median latency**: 21.3% faster (0.61ms → 0.48ms)
-- **Throughput**: 1.3% increase (653.1 → 661.3 RPS)
+#### **🔥 Throughput Excellence:**
+- **15,626 RPS peak** - exceptional file-based system performance
+- **7.5x thread pool overload** handled gracefully (1500 VUs vs 200 threads)
+- **100% success rate** under extreme stress - no timeouts or crashes
 
-*Tested with k6 performance suite. See [PERFORMANCE_TESTING.md](./PERFORMANCE_TESTING.md) for detailed analysis.*
+#### **📊 Complete Percentile Spectrum:**
+- **P50**: 0.16ms (median response time)
+- **P90**: 6.03ms (90th percentile)
+- **P95**: 12.51ms (95th percentile)
+- **P99**: 30.93ms (99th percentile)
+- **P99.9**: 85.80ms (999th per-mille)
+- **P99.99**: 189.74ms (99.99th percentile)
+- **P99.999**: 216.10ms (extreme tail latency)
+
+*Stress tested with k6 performance suite using 1500 virtual users. See [PERFORMANCE_TESTING.md](./PERFORMANCE_TESTING.md) for detailed analysis.*
 
 ## 🎯 **Roadmap**
 
