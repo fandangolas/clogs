@@ -9,7 +9,7 @@
   {:port 8080
    :db-file "logs.edn"})
 
-(s/defn create-app-config
+(defn create-app-config
   "Creates application configuration"
   [& {:keys [port db-file]
       :or {port (:port default-config)

@@ -4,7 +4,8 @@
             [clojure.set :as set]
             [io.pedestal.http :as http]
             [clogs.ports.ingestion :as ingestion-port]
-            [clogs.ports.query :as query-port]))
+            [clogs.ports.query :as query-port]
+            [clogs.ports.health :as health-port]))
 
 (s/defschema ServiceConfig
   "Configuration for the service"
@@ -15,7 +16,8 @@
   "Creates routes by combining all port routes"
   [database]
   (set/union (ingestion-port/create-routes database)
-             (query-port/create-routes database)))
+             (query-port/create-routes database)
+             (health-port/create-routes)))
 
 (s/defn create-service :- s/Any
   "Creates a Pedestal service configuration"
