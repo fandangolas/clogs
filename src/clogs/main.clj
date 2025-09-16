@@ -2,7 +2,7 @@
   "Main entry point for the Clogs application"
   (:require [schema.core :as s]
             [clogs.ingestion.service :as service]
-            [clogs.query.engine :as engine])
+            [clogs.database.adapters.file :as file-db])
   (:gen-class))
 
 (def default-config
@@ -15,7 +15,7 @@
       :or {port (:port default-config)
            db-file (:db-file default-config)}}]
   {:port port
-   :engine (engine/create-file-engine db-file)})
+   :database (file-db/create-file-database db-file)})
 
 (defn -main
   "Main entry point"
@@ -24,14 +24,13 @@
                (Integer/parseInt (first args))
                (:port default-config))
         db-file (or (second args) (:db-file default-config))
-        config (create-app-config :port port :db-file db-file)
-        service (service/create-service config)]
+        config (create-app-config :port port :db-file db-file)]
 
     (println (str "Starting Clogs ingestion server on port " port))
     (println (str "Using database file: " db-file))
 
     (try
-      (let [server (service/start-server service)]
+      (let [server (service/start-server config)]
         (println "Server started successfully")
         (println "Press Ctrl+C to stop")
 

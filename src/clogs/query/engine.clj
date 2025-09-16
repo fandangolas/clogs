@@ -1,58 +1,38 @@
 (ns clogs.query.engine
-  "Query engine that integrates database with domain logic using ports and adapters"
-  (:require [schema.core :as s]
-            [clogs.query.domain :as domain]
-            [clogs.database.port :as db-port]
-            [clogs.database.adapters.file :as file-adapter]))
+  "Functional query engine that defines query capabilities and execution logic"
+  (:require [clogs.query.domain :as domain]
+            [clogs.database.port :as db-port]))
 
-(s/defschema EngineConfig
-  "Configuration for the query engine"
-  {:database s/Any})
+(defn apply-query-to-entries
+  "Applies a query to a collection of log entries"
+  [{:keys [find where]} entries]
+  (let [filtered (if where
+                   (domain/apply-where-clause where entries)
+                   entries)
+        projected (if find
+                    (mapv #(select-keys % find) filtered)
+                    filtered)]
+    {:success? true
+     :data projected
+     :count (count projected)}))
 
-(def QueryResult db-port/DatabaseResult)
+(defn store-entry
+  "Stores a single log entry using the provided database"
+  [database entry]
+  (db-port/store-entry database entry))
 
-(s/defn create-engine
-  "Creates a new query engine with a database implementation"
-  [database :- db-port/DatabasePort]
-  {:database database})
+(defn store-entries
+  "Stores multiple log entries using the provided database"
+  [database entries]
+  (db-port/store-entries database entries))
 
-(s/defn create-file-engine
-  "Creates a new query engine with file-based database"
-  [file-path :- s/Str]
-  (create-engine (file-adapter/create-file-database file-path)))
-
-(s/defn store-entry :- db-port/DatabaseResult
-  "Stores a single log entry"
-  [engine :- EngineConfig
-   entry :- domain/LogEntry]
-  (db-port/store-entry (:database engine) entry))
-
-(s/defn store-entries :- db-port/DatabaseResult
-  "Stores multiple log entries"
-  [engine :- EngineConfig
-   entries :- [domain/LogEntry]]
-  (db-port/store-entries (:database engine) entries))
-
-(s/defn all-entries->filtered :- db-port/DatabaseResult
-  [db-result :- db-port/DatabaseResult
-   {:keys [find where]} :- s/Any]
-  (let [{:keys [success? data]} db-result]
-    (if (not success?)
-      db-result
-
-      (as-> (domain/apply-where-clause where data) $
-        (-> (if (nil? find) $ (map #(select-keys % find) $))
-            vec
-            db-port/success-result)))))
-
-(s/defn execute-query :- QueryResult
-  "Executes an EDN query against the stored data"
-  [engine :- EngineConfig
-   edn-query :- s/Any]
-  (let [{:keys [valid?] :as validation-result} (domain/validate-edn-query edn-query)]
-
+(defn execute-query
+  "Executes a query against stored data using the provided database"
+  [database query]
+  (let [{:keys [valid?] :as validation-result} (domain/validate-edn-query query)]
     (if (not valid?)
       (db-port/error-result (:errors validation-result))
-
-      (-> (db-port/read-all-entries (:database engine))
-          (all-entries->filtered edn-query)))))
+      (let [all-entries-result (db-port/read-all-entries database)]
+        (if (:success? all-entries-result)
+          (apply-query-to-entries query (:data all-entries-result))
+          all-entries-result)))))
