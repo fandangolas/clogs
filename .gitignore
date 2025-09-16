@@ -12,3 +12,18 @@ pom.xml.asc
 .lein-failures
 .nrepl-port
 .cpcache/
+
+# Performance testing results
+/performance_results/
+/k6/results/
+
+# macOS system files
+.DS_Store
+**/.DS_Store
+
+# clj-kondo cache
+.clj-kondo/.cache/
+
+# Generated log files
+logs.edn
+/logs/
