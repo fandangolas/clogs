@@ -143,16 +143,27 @@ clogs/
 
 See [DEVELOPMENT.md](./DEVELOPMENT.md) for detailed development guidelines, testing strategies, and contribution instructions.
 
+## ⚡ **Performance**
+
+Current implementation using file I/O for log ingestion and HTTP-based querying achieves:
+
+- **42.4 RPS** average throughput with **99.68% success rate**
+- **P99 latency: 287ms** (excellent response times)
+- **Handles 75 concurrent users** during 10-minute stress tests
+- **25,420+ requests** processed without memory issues
+
+*Tested with k6 performance suite. See [PERFORMANCE_TESTING.md](./PERFORMANCE_TESTING.md) for detailed analysis.*
+
 ## 🎯 **Roadmap**
 
 - [x] File-based storage adapter
 - [x] EDN query engine with logical operations
 - [x] Comprehensive test suite
 - [x] Ports and adapters architecture
+- [x] Performance benchmarks and k6 testing suite
 - [ ] Kafka storage adapter
 - [ ] Elasticsearch storage adapter
 - [ ] Query optimization
-- [ ] Performance benchmarks
 
 ## 📄 **License**
 
