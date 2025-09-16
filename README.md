@@ -145,12 +145,21 @@ See [DEVELOPMENT.md](./DEVELOPMENT.md) for detailed development guidelines, test
 
 ## ⚡ **Performance**
 
-Current implementation using file I/O for log ingestion and HTTP-based querying achieves:
+Current **async implementation** using core.async for concurrent file I/O and HTTP-based querying achieves:
 
-- **653.1 RPS** average throughput with **100% success rate**
-- **P99 latency: 3.26ms** (outstanding response times)
+- **661.3 RPS** average throughput with **100% success rate**
+- **P99 latency: 2.06ms** (outstanding sub-millisecond response times)
 - **Handles 75 concurrent users** during 10-minute stress tests
-- **395,367 requests** processed with zero errors
+- **396,850 requests** processed with zero errors
+
+### 🚀 **Async Performance Improvements**
+Core.async implementation delivers significant latency improvements over synchronous file I/O:
+
+- **P99 latency**: 36.8% faster (3.26ms → 2.06ms)
+- **P95 latency**: 30.2% faster (1.26ms → 0.88ms)
+- **P90 latency**: 26.3% faster (0.99ms → 0.73ms)
+- **Median latency**: 21.3% faster (0.61ms → 0.48ms)
+- **Throughput**: 1.3% increase (653.1 → 661.3 RPS)
 
 *Tested with k6 performance suite. See [PERFORMANCE_TESTING.md](./PERFORMANCE_TESTING.md) for detailed analysis.*
 
