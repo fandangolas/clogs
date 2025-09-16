@@ -1,0 +1,27 @@
+{;; Custom indentation rules
+ :indents {s/defschema [[:block 1]]     ; Keep schema definitions clean
+           defprotocol [[:block 1]]     ; Protocol definitions
+           defrecord [[:block 2]]       ; Record definitions
+           testing [[:block 1]]         ; Test blocks
+           deftest [[:block 1]]}        ; Remove s/defn rule - let cljfmt handle it naturally
+
+ ;; Standard namespace aliases
+ :alias-map {str clojure.string
+             io clojure.java.io
+             json clojure.data.json
+             s schema.core}
+
+ ;; Whitespace preferences
+ :remove-surrounding-whitespace? true
+ :remove-trailing-whitespace? true
+ :remove-consecutive-blank-lines? true
+ :insert-missing-whitespace? true
+
+ ;; Keep compact formatting for maps
+ :split-keypairs-over-multiple-lines? false
+
+ ;; Align keywords in maps vertically
+ :align-associative? true
+
+ ;; Don't auto-sort namespace requires (preserve manual organization)
+ :sort-ns-references? false}

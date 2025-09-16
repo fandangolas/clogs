@@ -1,0 +1,11 @@
+;; Debug Clojure mode and syntax highlighting
+(message "=== Clojure Debug Info ===")
+(message "Current major mode: %s" major-mode)
+(message "Font-lock mode: %s" (if font-lock-mode "ON" "OFF"))
+(message "Tree-sitter mode: %s" (if (bound-and-true-p tree-sitter-mode) "ON" "OFF"))
+(message "Clojure mode loaded: %s" (if (featurep 'clojure-mode) "YES" "NO"))
+(message "LSP mode active: %s" (if (bound-and-true-p lsp-mode) "YES" "NO"))
+(message "CIDER available: %s" (if (featurep 'cider) "YES" "NO"))
+(message "Current theme: %s" (if (boundp 'doom-theme) doom-theme "unknown"))
+(message "Font-lock keywords: %s" (length font-lock-keywords))
+(message "=== End Clojure Debug ===")

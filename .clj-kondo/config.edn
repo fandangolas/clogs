@@ -1,0 +1,21 @@
+{:lint-as {schema.core/defn clj-kondo.lint-as/def-catch-all
+           schema.core/defschema clj-kondo.lint-as/def-catch-all
+           schema.core/def clj-kondo.lint-as/def-catch-all}
+ :linters {:unresolved-symbol {:level :warning
+                               :exclude [s/defn s/defschema s/Str s/Int s/Bool s/Keyword s/Any s/maybe
+                                        s/enum s/conditional s/pred s/constrained s/vector s/seq s/set
+                                        s/recursive s/validate s/check s/optional-key s/required-key]}
+           :unused-binding {:level :warning}
+           :unused-namespace {:level :warning}
+           :unused-import {:level :warning}
+           :missing-docstring {:level :off}
+           :redundant-do {:level :warning}
+           :redundant-let {:level :warning}
+           :inline-def {:level :warning}
+           :format {:level :off}  ; We'll use cljfmt for formatting
+           :conflicting-alias {:level :error}
+           :duplicate-key {:level :error}
+           :invalid-arity {:level :warning}  ; Changed to warning for Plumatic Schema
+           :type-mismatch {:level :warning}
+           :unreachable-code {:level :warning}}
+ :config-paths ["src" "test/unit" "test/integration"]}
