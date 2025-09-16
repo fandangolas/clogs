@@ -8,41 +8,43 @@
 ## Phase 1: MVP Foundation (Weeks 1-4)
 
 ### Core Infrastructure
-- [ ] **Project Setup**
+- [x] **Project Setup**
   - Initialize Clojure project with deps.edn
   - Set up development environment (REPL, tooling)
   - Configure linting and formatting (clj-kondo, cljfmt)
 
-- [ ] **Data Schema Design**
-  - Define log entry schema with Malli
+- [x] **Data Schema Design**
+  - Define log entry schema with Plumatic Schema
   - Create validation functions for incoming logs
   - Design EDN query DSL schema
 
 ### Basic Ingestion & Storage
-- [ ] **HTTP Ingestion Endpoint**
+- [x] **HTTP Ingestion Endpoint**
   - Implement `/logs` HTTP endpoint using Pedestal
   - Add request validation and error handling
   - Return structured error responses
 
-- [ ] **EDN File Storage**
-  - Implement daily log file rotation (max 100MB)
+- [x] **EDN File Storage**
   - Create append-only EDN file writer
   - Add file management utilities
+  - Note: File rotation can be added later
 
-- [ ] **Basic Query Engine**
+- [x] **Basic Query Engine**
   - Parse EDN query DSL
-  - Implement file scanning for simple queries
-  - Support basic filters and aggregations
+  - Implement file scanning for queries
+  - Support filters, logical operations (AND/OR/NOT), and field selection
 
 ### Testing & Documentation
-- [ ] **Unit Tests**
+- [x] **Unit Tests**
   - Test schema validation
   - Test file operations
   - Test query parsing
 
-- [ ] **Integration Tests**
+- [x] **Integration Tests**
   - End-to-end log ingestion flow
   - Query execution against sample data
+  - Complete HTTP status code coverage
+  - Parallel test execution with database isolation
 
 **Deliverables**: Working HTTP ingestion + EDN storage + basic queries
 

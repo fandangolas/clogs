@@ -1,2 +1,3 @@
 java temurin-21.0.8+9.0.LTS
 clojure 1.12.2.1565
+python 3.13.7
