@@ -147,10 +147,10 @@ See [DEVELOPMENT.md](./DEVELOPMENT.md) for detailed development guidelines, test
 
 Current implementation using file I/O for log ingestion and HTTP-based querying achieves:
 
-- **42.4 RPS** average throughput with **99.68% success rate**
-- **P99 latency: 287ms** (excellent response times)
+- **653.1 RPS** average throughput with **100% success rate**
+- **P99 latency: 3.26ms** (outstanding response times)
 - **Handles 75 concurrent users** during 10-minute stress tests
-- **25,420+ requests** processed without memory issues
+- **395,367 requests** processed with zero errors
 
 *Tested with k6 performance suite. See [PERFORMANCE_TESTING.md](./PERFORMANCE_TESTING.md) for detailed analysis.*
 
